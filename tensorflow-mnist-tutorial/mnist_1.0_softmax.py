@@ -42,12 +42,42 @@ mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
 
 # input X: 28x28 grayscale images, the first dimension (None) will index the images in the mini-batch
 X = tf.placeholder(tf.float32, [None, 28, 28, 1])
+X_1 = tf.placeholder(tf.float32, [None, 28, 28, 1])
+print("---------X_1-----------",type(X_1))
+
 # correct answers will go here
 Y_ = tf.placeholder(tf.float32, [None, 10])
+print("---------Y_-----------",type(Y_))
+
 # weights W[784, 10]   784=28*28
 W = tf.Variable(tf.zeros([784, 10]))
+print("---------W-----------",type(W))
+
+
+"""
+The weights being passed in as INITIAL Weights
+"""
+
+weights_1 = tf.Variable(tf.zeros([784, 10]))
+print("The weights being passed in as INITIAL Weights ---->>",type(weights_1))
+# <class 'tensorflow.python.ops.variables.Variable'>
+print("The weights being passed in as INITIAL Weights ---->>",weights_1)
+
+"""
+The Python Class of the Weights Variable is ```# <class 'tensorflow.python.ops.variables.Variable'>``` . 
+If we were to Print() the Weights variable in the 
+terminal - we get to see ```<tf.Variable 'Variable_1:0' shape=(784, 10) dtype=float32_ref> ```. 
+We dont see a ARRAY of any sort ?? Why ??
+"""
+
+
 # biases b[10]
 b = tf.Variable(tf.zeros([10]))
+biases_1 = tf.Variable(tf.zeros([10]))
+print("biases_1-----------",biases_1)
+print("  "*90)
+
+
 
 # flatten the images into a single line of pixels
 # -1 in the shape definition means "the only possible dimension that will preserve the number of elements"
