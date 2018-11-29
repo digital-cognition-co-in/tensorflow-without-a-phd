@@ -17,22 +17,27 @@ import tensorflow as tf
 import numpy as np
 
 import sys
-sys.path.append("mlengine")
+sys.path.append("mlengine") #DHANKAR--# Permanently appended the DIR - mlengine - to the -- sys.path
 from trainer.task import load_mnist_data  # import from mlengine/trainer/task.py
+## DHANKAR --- /tensorflow-without-a-phd-master/tensorflow-mnist-tutorial/mlengine/trainer/task.py
 from trainer.task import load_dataset     # import from mlengine/trainer/task.py
 
 # This loads entire dataset to an in-memory numpy array.
 # This uses tf.data.Dataset to avoid duplicating code.
+
 # Normally, if you already have a tf.data.Dataset, loading
 # it to memory is not useful. The goal here is educational:
 # teach about neural network basics without having to
 # explain tf.data.Dataset now. The concept will be introduced
 # later.
+
 # The proper way of using tf.data.Dataset is to call
 # features, labels = tf_dataset.make_one_shot_iterator().get_next()
 # and then to use "features" and "labels" in your Tensorflow
-# model directly. These tensorflow nodes, when executed, will
+# model directly. 
+# These tensorflow nodes, when executed, will
 # automatically trigger the loading of the next batch of data.
+
 # The sample that uses tf.data.Dataset correctly is in mlengine/trainer.
 
 class MnistData(object):
@@ -43,8 +48,21 @@ class MnistData(object):
         self.labels = None
         # load entire Dataset into memory by chunks of 10000
         tf_dataset = tf_dataset.batch(10000)
-        tf_dataset = tf_dataset.repeat(1)
+        tf_dataset = tf_dataset.repeat(1) 
+        ## Whats this ---- dataset = dataset.repeat(epoch)
+        ## Source --- https://stackoverflow.com/questions/47067401/how-to-iterate-dataset-several-times-using-tensorflow-dataset-api
+
         features, labels = tf_dataset.make_one_shot_iterator().get_next()
+        print("-------labels------TYPE--------",type(labels))
+        ## - Tensor("IteratorGetNext:1", shape=(?,), dtype=uint8)
+        ## Tensor("IteratorGetNext_1:1", shape=(?,), dtype=uint8) 
+
+        print("-------labels--------------",labels)
+        ## <class 'tensorflow.python.framework.ops.Tensor'>
+        print("-------labels--------------",type(features))
+        ## <class 'tensorflow.python.framework.ops.Tensor'>
+
+
         if not reshape:
             features = tf.reshape(features, [-1, 28, 28, 1])
         if one_hot:

@@ -39,20 +39,25 @@ tf.set_random_seed(0)
 
 # Download images and labels into mnist.test (10K images+labels) and mnist.train (60K images+labels)
 mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
+## /tensorflow-without-a-phd/tensorflow-mnist-tutorial/mnistdata.py
+print(type(mnist))
+## <class 'mnistdata.Mnist'>
 
 # input X: 28x28 grayscale images, the first dimension (None) will index the images in the mini-batch
 X = tf.placeholder(tf.float32, [None, 28, 28, 1])
 X_1 = tf.placeholder(tf.float32, [None, 28, 28, 1])
 print("---------X_1-----------",type(X_1))
+##  <class 'tensorflow.python.framework.ops.Tensor'>
 
 # correct answers will go here
 Y_ = tf.placeholder(tf.float32, [None, 10])
 print("---------Y_-----------",type(Y_))
+##  <class 'tensorflow.python.framework.ops.Tensor'>
 
 # weights W[784, 10]   784=28*28
 W = tf.Variable(tf.zeros([784, 10]))
 print("---------W-----------",type(W))
-
+## <class 'tensorflow.python.ops.variables.Variable'>
 
 """
 The weights being passed in as INITIAL Weights
@@ -62,12 +67,14 @@ weights_1 = tf.Variable(tf.zeros([784, 10]))
 print("The weights being passed in as INITIAL Weights ---->>",type(weights_1))
 # <class 'tensorflow.python.ops.variables.Variable'>
 print("The weights being passed in as INITIAL Weights ---->>",weights_1)
+## <tf.Variable 'Variable_1:0' shape=(784, 10) dtype=float32_ref>
+
 
 """
 The Python Class of the Weights Variable is ```# <class 'tensorflow.python.ops.variables.Variable'>``` . 
 If we were to Print() the Weights variable in the 
 terminal - we get to see ```<tf.Variable 'Variable_1:0' shape=(784, 10) dtype=float32_ref> ```. 
-We dont see a ARRAY of any sort ?? Why ??
+We dont see a ARRAY of any sort ?? Why ?? Nothing ASSIGNED yet ??
 """
 
 
@@ -75,6 +82,18 @@ We dont see a ARRAY of any sort ?? Why ??
 b = tf.Variable(tf.zeros([10]))
 biases_1 = tf.Variable(tf.zeros([10]))
 print("biases_1-----------",biases_1)
+## <tf.Variable 'Variable_3:0' shape=(10,) dtype=float32_ref>
+"""
+# Source == https://stackoverflow.com/questions/37958706/in-tensorflow-what-is-the-difference-between-a-tensor-that-has-a-type-ending-in
+# https://github.com/mrry?tab=repositories
+
+In addition, variants of these types with the _ref suffix are defined for reference-typed tensors.
+#
+A reference-typed tensor is mutable. The most common way to create a reference-typed tensor
+ is to define a tf.Variable: defining a tf.Variable whose initial value has dtype tf.float32 will
+  create a reference-typed tensor with dtype tf.float32_ref.
+   You can mutate a reference-typed tensor by passing it as the first argument to tf.assign().
+"""
 print("  "*90)
 
 
@@ -82,9 +101,20 @@ print("  "*90)
 # flatten the images into a single line of pixels
 # -1 in the shape definition means "the only possible dimension that will preserve the number of elements"
 XX = tf.reshape(X, [-1, 784])
+print("type-----------XX---------",type(XX))
+## <class 'tensorflow.python.framework.ops.Tensor'>
+print("tf.reshape-----------XX---------",XX)
+## Tensor("Reshape_2:0", shape=(?, 784), dtype=float32)
+print("  "*90)
+
 
 # The model
 Y = tf.nn.softmax(tf.matmul(XX, W) + b)
+print("type--------MODEl == Y-----",type(Y))
+## <class 'tensorflow.python.framework.ops.Tensor'>
+
+
+### DHANKAR --- cross-entropy ---- https://github.com/digital-cognition-co-in/Tensors_et_al/blob/master/README_tfNotes_.md
 
 # loss function: cross-entropy = - sum( Y_i * log(Yi) )
 #                           Y: the computed output vector
